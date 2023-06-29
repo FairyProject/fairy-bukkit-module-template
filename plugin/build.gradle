@@ -86,7 +86,7 @@ tasks {
     shadowJar {
         relocate("io.fairyproject", "" + findProperty("plugin.package") + ".fairy")
         relocate("net.kyori", "" + findProperty("plugin.package") + ".fairy.libs.kyori")
-        relocate("com.github.retrooper.packetevents", "" + findProperty("plugin.package") + ".fairy.libs.packetevents")
+        //relocate("com.github.retrooper.packetevents", "" + findProperty("plugin.package") + ".fairy.libs.packetevents")
         relocate("dev.imanity.brew", "" + findProperty("plugin.package") + ".brew")
         relocate("org.yaml.snakeyaml", "" + findProperty("plugin.package") + ".snakeyaml")
         relocate("com.cryptomorin.xseries", "" + findProperty("plugin.package") + ".xseries")
@@ -104,7 +104,7 @@ tasks {
         dependencies {
             exclude(dependency("com.google.*:.*:.*"))
             //exclude(dependency("net.kyori:.*:.*"))
-            //exclude(dependency("io.fairyproject.packetevents:.*:.*"))
+            exclude(dependency("io.fairyproject.packetevents:.*:.*"))
         }
     }
 
