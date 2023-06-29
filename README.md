@@ -9,4 +9,8 @@
   <a><img alt="GitHub contributors (via allcontributors.org)" src="https://img.shields.io/github/all-contributors/FairyProject/fairy-bukkit-module-template/master"></a>
 </p>
 
-# Fairy Framewo
+# Fairy Bukkit Template 
+
+What do I do? Just copy here!
+
+![How to copy](https://i.imgur.com/XYPa3v6.png)
