@@ -1,0 +1,27 @@
+[versions]
+plugin = "1.0.0"
+paper = "1.16.5-R0.1-SNAPSHOT"
+lombok = "1.18.24"
+annotations = "23.0.0"
+brew = "0.3b7-SNAPSHOT"
+particles = "1.8.1"
+tacoSpigot = "1.8.8"
+mongodb = "3.12.11"
+placeholderApi = "2.11.2"
+configurate = "4.1.2"
+fairy = "0.6.4b3-SNAPSHOT"
+
+[libraries]
+configurate = { module = "org.spongepowered:configurate-core", version.ref = "configurate" }
+configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+paper = { module = "com.destroystokyo.paper:paper-api", version.ref = "paper" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+brew = { module = "dev.imanity.brew:brew", version.ref = "brew" }
+particles = { module = "xyz.xenondevs:particle", version.ref = "particles" }
+tacoSpigot = { module = "org.imanity.spigot:TacoSpigot", version.ref = "tacoSpigot" }
+mongodb = { module = "org.mongodb:mongo-java-driver", version.ref = "mongodb" }
+placeholderApi = { module = "me.clip:placeholderapi", version.ref = "placeholderApi" }
+
+[bundles]
+configurate = [ "configurate", "configurate-yaml" ]

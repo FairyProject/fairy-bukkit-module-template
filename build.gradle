@@ -1,0 +1,32 @@
+//file:noinspection GroovyAssignabilityCheck
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+version = '1.0.0'
+
+allprojects {
+    if (isNotJavaProject(project)) {
+        project.tasks.all { task -> task.enabled = false }
+        return
+    }
+
+    group = findProperty("plugin.package")
+}
+
+subprojects {
+    if (isNotJavaProject(project)) {
+        project.tasks.all { task -> task.enabled = false }
+        project.tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
+        return
+    }
+}
+
+static boolean isNotJavaProject(Project project) {
+    return project.buildFile == null || !project.buildFile.exists()
+}

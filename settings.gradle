@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven {
+            url "https://repo.imanity.dev/imanity-libraries"
+        }
+    }
+}
+
+
+rootProject.name = 'FairyTemplate'
+include 'plugin'
+include 'modules'
+
