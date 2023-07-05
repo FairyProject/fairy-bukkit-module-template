@@ -88,8 +88,10 @@ public class ModuleManager {
         ContainerNode node = ContainerNode.create(ExamplePlugin.get().getName() + ":" + name);
         ContainerNodeClassScanner classScanner = new ContainerNodeClassScanner(context, ExamplePlugin.get().getName() + ":" + name, node);
         classScanner.getClassLoaders().add(ExamplePlugin.get().getPluginClassLoader());
-        classScanner.getClassPaths().add(this.getClass().getPackage().getName());
+        classScanner.getClassPaths().add("*");
         classScanner.getUrls().add(path.toUri().toURL());
+        classScanner.scan();
+
         new ContainerNodeLoader(context, node).load();
 
         return module;

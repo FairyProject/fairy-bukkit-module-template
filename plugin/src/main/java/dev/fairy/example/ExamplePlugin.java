@@ -21,25 +21,46 @@ public class ExamplePlugin extends Plugin {
         this.loadLibraries();
     }
 
-    @Override
-    public void onPluginEnable() {
-        System.out.println("Successfully enabled!");
-    }
-
     private void loadLibraries() {
         Log.info("Loading libraries... (This may take a while on first startup)");
 
-        Fairy.getLibraryHandler().loadLibrary(Library.builder()
-                .gradle("io{}fairyproject{}packetevents:api:2.0.17-SNAPSHOT")
-                .version("2.0.17-20230204.083929-1", "2.0.17-SNAPSHOT")
-                .repository("https://repo.imanity.dev/imanity-libraries/")
-                .build(), true, Relocation.of("net{}kyori", "io.fairyproject.libs.kyori"));
-        Fairy.getLibraryHandler().loadLibrary(Library.builder()
-                .gradle("io{}fairyproject{}packetevents:spigot:2.0.17-SNAPSHOT")
-                .version("2.0.17-20230204.083929-1", "2.0.17-SNAPSHOT")
-                .repository("https://repo.imanity.dev/imanity-libraries/")
-                .build(), true, Relocation.of("net{}kyori", "io.fairyproject.libs.kyori"));
+        this.loadDatabaseLibrary();
+        this.loadPacketEventsLibrary();
+        this.loadConfigurateLibrary();
 
         new BukkitAdventureLibraryBundle("4.11.0", "4.1.2").load(Fairy.getLibraryHandler());
+    }
+
+    private void loadDatabaseLibrary() {
+        Fairy.getLibraryHandler().loadLibrary(Library.builder()
+                .gradle("org.mongodb:mongo-java-driver:3.12.11")
+                .build(), true);
+    }
+
+    private void loadPacketEventsLibrary() {
+        Fairy.getLibraryHandler().loadLibrary(Library.builder()
+                .groupId("com.github.retrooper.packetevents")
+                .artifactId("api")
+                .version("2.0-ec36a5d1d8-1")
+                .repository("https://jitpack.io/")
+                .build(), true
+        );
+
+        Fairy.getLibraryHandler().loadLibrary(Library.builder()
+                .groupId("com.github.retrooper.packetevents")
+                .artifactId("spigot")
+                .version("2.0-ec36a5d1d8-1")
+                .repository("https://jitpack.io/")
+                .build(), true
+        );
+    }
+
+    private void loadConfigurateLibrary() {
+        Fairy.getLibraryHandler().loadLibrary(Library.builder()
+                .gradle("org{}spongepowered:configurate-core:4.1.2")
+                .build(), true, Relocation.of("org{}spongepowered{}configurate", "dev.ghast.kgenerators.libs.configurate"));
+        Fairy.getLibraryHandler().loadLibrary(Library.builder()
+                .gradle("org{}spongepowered:configurate-yaml:4.1.2")
+                .build(), true, Relocation.of("org{}spongepowered{}configurate", "dev.ghast.kgenerators.libs.configurate"));
     }
 }

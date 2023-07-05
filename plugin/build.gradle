@@ -1,32 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
-plugins {
-    // Allows for java dependencies
-    id 'java-library'
-
-    // Fairy framework
-    id 'io.fairyproject' version '0.6.4b3-SNAPSHOT'
-
-    // Dependency, compilation and debugging
-    id("io.spring.dependency-management") version "1.1.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("xyz.jpenilla.run-paper") version "1.0.6"
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        url 'https://repo.imanity.dev/imanity-libraries'
-    }
-    maven {
-        url 'https://repo.papermc.io/repository/maven-public'
-    }
-}
-
 fairy {
     mainPackage.set("" + findProperty("plugin.package"))
 
@@ -34,93 +5,47 @@ fairy {
 }
 
 dependencies {
-    implementation("io.fairyproject:bukkit-bundles")
-    implementation("io.fairyproject:module.animation")
-    implementation("io.fairyproject:bukkit-command")
-    implementation("io.fairyproject:bukkit-menu")
-    implementation("io.fairyproject:module.hologram")
-    implementation("io.fairyproject:module.config")
-    implementation("io.fairyproject:module.nametag")
-    implementation("io.fairyproject:module.sidebar")
-    implementation("io.fairyproject:bukkit-visibility")
-    implementation("io.fairyproject:bukkit-visual")
-    implementation("io.fairyproject:module.tablist")
+    api("io.fairyproject:bukkit-bundles")
+    api("io.fairyproject:module.animation")
+    api("io.fairyproject:bukkit-command")
+    api("io.fairyproject:bukkit-menu")
+    api("io.fairyproject:module.hologram")
+    api("io.fairyproject:module.config")
+    api("io.fairyproject:module.nametag")
+    api("io.fairyproject:module.sidebar")
+    api("io.fairyproject:bukkit-visibility")
+    api("io.fairyproject:bukkit-visual")
+    api("io.fairyproject:bukkit-timer")
+    api("io.fairyproject:bukkit-nbt")
+    api("io.fairyproject:module.tablist")
 }
 
 dependencies {
-    compileOnly(libs.annotations)
-    compileOnly(libs.bundles.configurate)
+    compileOnlyApi(libs.annotations)
+    compileOnlyApi(libs.bundles.configurate)
 
     /* ----- Bukkit ----- */
-    compileOnly(libs.paper)
+    compileOnlyApi(libs.paper)
 
     /* ----- Database ----- */
-    compileOnly(libs.mongodb)
+    compileOnlyApi(libs.mongodb)
 
     // If you're a minigame, enable this
     //implementation(libs.brew)
 
     /* ----- Minecraft APIs ----- */
     //compileOnly(libs.placeholderApi)
-    implementation(libs.particles)
-
-    // Lombok
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
-    testCompileOnly(libs.lombok)
-    testAnnotationProcessor(libs.lombok)
-
-    // Testing
-    implementation("org.apache.commons:commons-compress:1.22")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    //api(libs.particles)
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
-
     }
 }
 
 tasks {
     shadowJar {
-        relocate("io.fairyproject", "" + findProperty("plugin.package") + ".fairy")
-        relocate("net.kyori", "" + findProperty("plugin.package") + ".fairy.libs.kyori")
-        //relocate("com.github.retrooper.packetevents", "" + findProperty("plugin.package") + ".fairy.libs.packetevents")
-        relocate("dev.imanity.brew", "" + findProperty("plugin.package") + ".brew")
-        relocate("org.yaml.snakeyaml", "" + findProperty("plugin.package") + ".snakeyaml")
-        relocate("com.cryptomorin.xseries", "" + findProperty("plugin.package") + ".xseries")
-        relocate("org.spongepowered.configurate", "" + findProperty("plugin.package") + ".libs.configurate")
-        relocate("io.leangen.geantyref", "" + findProperty("plugin.package") + ".libs.geantyref")
-        relocate("xyz.xenondevs.particle", "" + findProperty("plugin.package") + ".libs.particle")
-        relocate("org.apache.commons.compress", "" + findProperty("plugin.package") + ".libs.compress")
-
         archiveFileName.set("my-plugin.jar")
-
-        minimize {
-            exclude(dependency("io.fairyproject:.*:.*"))
-        }
-
-        dependencies {
-            exclude(dependency("com.google.*:.*:.*"))
-            //exclude(dependency("net.kyori:.*:.*"))
-            exclude(dependency("io.fairyproject.packetevents:.*:.*"))
-        }
     }
-
-    build {
-        dependsOn(shadowJar)
-    }
-
-    runServer {
-        minecraftVersion("1.8.8")
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-}
-
-test {
-    useJUnitPlatform()
 }

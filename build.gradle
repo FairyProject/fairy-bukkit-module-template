@@ -4,15 +4,23 @@ buildscript {
         mavenCentral()
     }
 }
+plugins {
+    id 'java-library'
+    id 'io.fairyproject' version '0.6.4b8-SNAPSHOT'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'xyz.jpenilla.run-paper' version '1.0.6'
+}
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 version = '1.0.0'
 
 allprojects {
     if (isNotJavaProject(project)) {
-        project.tasks.all { task -> task.enabled = false }
+        project.tasks.configureEach { task -> task.enabled = false }
         return
     }
 
@@ -20,10 +28,108 @@ allprojects {
 }
 
 subprojects {
+    version = rootProject.version
+
     if (isNotJavaProject(project)) {
         project.tasks.all { task -> task.enabled = false }
         project.tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
         return
+    }
+
+    apply plugin: 'java-library'
+    apply plugin: 'io.fairyproject'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'xyz.jpenilla.run-paper'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name 'Jitpack'
+            url 'https://jitpack.io'
+        }
+        maven {
+            name 'Imanity'
+            url 'https://repo.imanity.dev/imanity-libraries'
+        }
+        maven {
+            name 'PaperMC'
+            url 'https://repo.papermc.io/repository/maven-public'
+        }
+        maven {
+            name = "CodeMC"
+            url = uri("https://repo.codemc.io/repository/maven-public/")
+        }
+    }
+
+    dependencies {
+        // Jabel
+        annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+        compileOnly 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+
+        // Lombok
+        compileOnly(libs.lombok)
+        annotationProcessor(libs.lombok)
+        testCompileOnly(libs.lombok)
+        testAnnotationProcessor(libs.lombok)
+
+        // Testing
+        implementation("org.apache.commons:commons-compress:1.22")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    }
+
+    configure([tasks.compileJava]) {
+        sourceCompatibility = 16 // for the IDE support
+        options.release = 8
+        options.encoding = 'UTF-8'
+
+        javaCompiler = javaToolchains.compilerFor {
+            languageVersion = JavaLanguageVersion.of(16)
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+
+    shadowJar {
+        relocate("io.fairyproject", "" + findProperty("plugin.package") + ".fairy")
+        relocate("net.kyori", "" + findProperty("plugin.package") + ".fairy.libs.kyori")
+        //relocate("com.github.retrooper.packetevents", "" + findProperty("plugin.package") + ".fairy.libs.packetevents")
+        relocate("dev.imanity.brew", "" + findProperty("plugin.package") + ".brew")
+        relocate("org.yaml.snakeyaml", "" + findProperty("plugin.package") + ".snakeyaml")
+        relocate("com.cryptomorin.xseries", "" + findProperty("plugin.package") + ".xseries")
+        relocate("org.spongepowered.configurate", "" + findProperty("plugin.package") + ".libs.configurate")
+        relocate("io.leangen.geantyref", "" + findProperty("plugin.package") + ".libs.geantyref")
+        relocate("xyz.xenondevs.particle", "" + findProperty("plugin.package") + ".libs.particle")
+
+        minimize {
+            exclude(dependency("io.fairyproject:.*:.*"))
+            exclude(dependency("org.apache.commons.compress:.*:.*"))
+        }
+
+        dependencies {
+            exclude(dependency("com.google.*:.*:.*"))
+            //exclude(dependency("net.kyori:.*:.*"))
+            exclude(dependency("io.fairyproject.packetevents:.*:.*"))
+        }
+
+        archiveFileName.set(archiveFileName.get().split("-")[0])
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+
+    runServer {
+        minecraftVersion("1.19.4")
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
