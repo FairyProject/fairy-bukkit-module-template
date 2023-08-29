@@ -5,18 +5,18 @@ buildscript {
     }
 }
 plugins {
-    id 'java-library'
-    id 'io.fairyproject' version '0.6.4b8-SNAPSHOT'
-    id 'io.spring.dependency-management' version '1.1.0'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'xyz.jpenilla.run-paper' version '1.0.6'
+    id "java-library"
+    id "io.fairyproject" version "0.6.6b10-SNAPSHOT"
+    id "io.spring.dependency-management" version "1.1.0"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "xyz.jpenilla.run-paper" version "1.0.6"
 }
 
 repositories {
     mavenLocal()
     mavenCentral()
 }
-version = '1.0.0'
+version = "1.0.0"
 
 allprojects {
     if (isNotJavaProject(project)) {
@@ -36,26 +36,26 @@ subprojects {
         return
     }
 
-    apply plugin: 'java-library'
-    apply plugin: 'io.fairyproject'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'com.github.johnrengelman.shadow'
-    apply plugin: 'xyz.jpenilla.run-paper'
+    apply plugin: "java-library"
+    apply plugin: "io.fairyproject"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "xyz.jpenilla.run-paper"
 
     repositories {
         mavenLocal()
         mavenCentral()
         maven {
-            name 'Jitpack'
-            url 'https://jitpack.io'
+            name "Jitpack"
+            url "https://jitpack.io"
         }
         maven {
-            name 'Imanity'
-            url 'https://repo.imanity.dev/imanity-libraries'
+            name "Imanity"
+            url "https://repo.imanity.dev/imanity-libraries"
         }
         maven {
-            name 'PaperMC'
-            url 'https://repo.papermc.io/repository/maven-public'
+            name "PaperMC"
+            url "https://repo.papermc.io/repository/maven-public"
         }
         maven {
             name = "CodeMC"
@@ -65,8 +65,8 @@ subprojects {
 
     dependencies {
         // Jabel
-        annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
-        compileOnly 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+        annotationProcessor "com.github.bsideup.jabel:jabel-javac-plugin:0.4.2"
+        compileOnly "com.github.bsideup.jabel:jabel-javac-plugin:0.4.2"
 
         // Lombok
         compileOnly(libs.lombok)
@@ -80,12 +80,12 @@ subprojects {
     }
 
     configure([tasks.compileJava]) {
-        sourceCompatibility = 16 // for the IDE support
+        sourceCompatibility = 17 // for the IDE support
         options.release = 8
-        options.encoding = 'UTF-8'
+        options.encoding = "UTF-8"
 
         javaCompiler = javaToolchains.compilerFor {
-            languageVersion = JavaLanguageVersion.of(16)
+            languageVersion = JavaLanguageVersion.of(17)
         }
     }
 

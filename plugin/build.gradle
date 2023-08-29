@@ -40,12 +40,12 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 tasks {
     shadowJar {
-        archiveFileName.set("my-plugin.jar")
+        archiveFileName.set(rootProject.name + ".jar")
     }
 }
