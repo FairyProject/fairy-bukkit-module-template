@@ -1,11 +1,20 @@
+apply plugin: "io.fairyproject"
+
 fairy {
+    name.set(project.name)
     mainPackage.set("" + findProperty("plugin.package"))
+    if (isProd) {
+        fairyPackage.set(findProperty("plugin.package").toString() + ".fairy")
+    } else {
+        fairyPackage.set("io.fairyproject")
+    }
 
     bukkitProperties().bukkitApi = "1.13"
 }
 
 dependencies {
     api("io.fairyproject:bukkit-bundles")
+    api("io.fairyproject:bukkit-devtools")
     api("io.fairyproject:module.animation")
     api("io.fairyproject:bukkit-command")
     api("io.fairyproject:bukkit-menu")
@@ -48,4 +57,10 @@ tasks {
     shadowJar {
         archiveFileName.set(rootProject.name + ".jar")
     }
+}
+
+runSpigotServer {
+    version = "1.19.4"
+    // Add your modules here
+    projects.add(project(":modules:example"))
 }

@@ -1,0 +1,46 @@
+apply plugin: "io.fairyproject"
+
+fairy {
+    name.set(project.name)
+    mainPackage.set("" + findProperty("plugin.package"))
+    if (isProd) {
+        fairyPackage.set(findProperty("plugin.package").toString() + ".fairy")
+    } else {
+        fairyPackage.set("io.fairyproject")
+    }
+
+    bukkitProperties().bukkitApi = "1.13"
+    bukkitProperties().getDepends().add(rootProject.name)
+}
+
+dependencies {
+    implementation("io.fairyproject:bukkit-bundles")
+}
+
+dependencies {
+    compileOnlyApi(project(":plugin"))
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+
+    shadowJar {
+        relocate("io.fairyproject.bootstrap", "" + findProperty("plugin.package") + ".fairy.bootstrap")
+
+        dependencies {
+            exclude(dependency("io.github.classgraph:.*:.*"))
+            exclude(dependency("io.github.toolfactory:.*:.*"))
+            exclude(dependency("javax.annotation:.*:.*"))
+            exclude(dependency("javax.persistence:.*:.*"))
+            exclude(dependency("com.google.code.gson:.*:.*"))
+            exclude(dependency("org.yaml:.*:.*"))
+            exclude(dependency("com.google.*:.*:.*"))
+            exclude(dependency("org.jetbrains:.*:.*"))
+            exclude(dependency("net.kyori:.*:.*"))
+            exclude(dependency("com.github.retrooper.*:.*:.*"))
+            exclude(dependency("io.fairyproject:.*-platform:.*"))
+        }
+    }
+}

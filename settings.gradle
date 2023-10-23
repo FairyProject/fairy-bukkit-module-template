@@ -12,6 +12,8 @@ pluginManagement {
 rootProject.name = 'FairyTemplate'
 include 'plugin'
 
+createModule('example')
+
 void createModule(final String link) {
     include('modules:' + link)
     findProject(':modules:' + link)?.name = link
