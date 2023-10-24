@@ -1,7 +1,7 @@
 apply plugin: "io.fairyproject"
 
 fairy {
-    name.set(project.name)
+    name.set(rootProject.name)
     mainPackage.set("" + findProperty("plugin.package"))
     if (isProd) {
         fairyPackage.set(findProperty("plugin.package").toString() + ".fairy")
